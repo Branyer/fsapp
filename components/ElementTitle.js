@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const ProjectTitle = ({text}) => {
+const ElementTitle = ({text}) => {
 
   return (
     <View style={styles.item}>
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProjectTitle;
+export default ElementTitle;

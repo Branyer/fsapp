@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView } from 'react-native';
-import ProjectTitle from './ProjectTitle';
+import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, Button } from 'react-native';
+import ElementTitle from './ElementTitle';
 
 
- function Home() {
+ function Home({navigation}) {
 
   const [project, setProject] = useState();
   const [projectItems, setProjectItems] = useState([{id: "0", title: "Project1"}]);
@@ -26,11 +26,16 @@ import ProjectTitle from './ProjectTitle';
       <View style={styles.tasksWrapper}>
         <Text style={styles.sectionTitle}>Projects</Text>
         <View style={styles.items}>
-          {projectItems.map(item => {
+          {projectItems.map(item => 
 
-              return <ProjectTitle key={item.id} text={item.title}/>
+              
+                (
+                <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Project', {title: item.title})}>
+                    <ElementTitle  text={item.title} />
+                </TouchableOpacity>
+                )
 
-          })}
+          )}
         </View>
       </View>
       </ScrollView>

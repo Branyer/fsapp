@@ -9,6 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Home from './components/Home';
 import Project from './components/Project';
+import Note from './components/Note';
 
 const Stack = createNativeStackNavigator()
 
@@ -23,6 +24,7 @@ Amplify.configure(config)
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Project" component={Project} />
+        <Stack.Screen name="Note" component={Note} />
       </Stack.Navigator>
     </NavigationContainer>
   );

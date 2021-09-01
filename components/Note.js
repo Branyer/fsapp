@@ -1,64 +1,37 @@
 import React, {useState} from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native';
 import ElementTitle from './ElementTitle';
 
 const Project = ({route, navigation}) => {
 
   const { title} = route.params;
-  const [note, setNote] = useState();
+  const [note, setNote] = useState({task: "", description: "", steps: "", due: "", watcher: "", sprint: "", status: "Todo"});
 
-  const [noteItems, setNoteItems] = useState([{id: "0", title: "Note 1"}]);
-
-  const handleAddNote = () => {
-    Keyboard.dismiss();
-    setNoteItems([...noteItems, { id: noteItems.length + 1 , title: note}])
-    setNote(null);
-  }
 
 
   return (
       <View style={styles.container}>
+        <View style={styles.item}>
+        
+            
+            <Text style={styles.itemText}>{title}</Text>
 
+    
+        </View>
         <ScrollView
                 contentContainerStyle={{
                 flexGrow: 1
                 }}
                 keyboardShouldPersistTaps='handled'
             >
-
-        <View style={styles.item}>
-        
-            
-            <Text style={styles.itemText}>{title}</Text>
-
-        
-        </View>
-        <View style={styles.tasksWrapper}>
-
-        {noteItems.map(item => 
-
-                            
-                (
-                 <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Note', {title: item.title})}>
-                    <ElementTitle  text={item.title} />
-                 </TouchableOpacity>
-                )
-
-                )}
-        </View>
-       
-            <KeyboardAvoidingView 
-                behavior={"height"}
-                style={styles.writeTaskWrapper}
-            >
-                <TextInput style={styles.input} placeholder={'Note'} value={note} onChangeText={text => setNote(text)} />
-                <TouchableOpacity onPress={() => handleAddNote()}>
-                    <View style={styles.addWrapper}>
-                        <Text style={styles.addText}>+</Text>
-                    </View>
-                </TouchableOpacity>
-            </KeyboardAvoidingView>
-        </ScrollView >
+            <TextInput style={styles.input} placeholder={'Task'} value={note.task} onChangeText={text => setNote((note) => ({...note, task: text}) )} />
+            <TextInput style={styles.input} placeholder={'description'} value={note.description} onChangeText={text => setNote((note) => ({...note, description: text}) )} />
+            <TextInput style={styles.input} placeholder={'steps'} value={note.steps} onChangeText={text => setNote((note) => ({...note, steps: text}) )} />
+            <TextInput style={styles.input} placeholder={'due'} value={note.due} onChangeText={text => setNote((note) => ({...note, due: text}) )} />
+            <TextInput style={styles.input} placeholder={'watcher'} value={note.watcher} onChangeText={text => setNote((note) => ({...note, watcher: text}) )} />
+            <TextInput style={styles.input} placeholder={'sprint'} value={note.sprint} onChangeText={text => setNote((note) => ({...note, sprint: text}) )} />
+            <TextInput style={styles.input} placeholder={'status'} value={note.status} onChangeText={text => setNote((note) => ({...note, status: text}) )} />
+        </ScrollView>
         
       </View>
   )
@@ -120,7 +93,7 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     borderColor: '#C0C0C0',
     borderWidth: 1,
-    width: 200,
+    width: "100%",
   },
   addWrapper: {
     width: 60,
