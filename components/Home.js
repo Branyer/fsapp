@@ -1,16 +1,46 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView, Button } from 'react-native';
 import ElementTitle from './ElementTitle';
+
+
+import {GlobalContext} from "../contexts/GlobalContext"
+import { uuid } from 'uuidv4';
 
 
  function Home({navigation}) {
 
   const [project, setProject] = useState();
-  const [projectItems, setProjectItems] = useState([{id: "0", title: "Project1"}]);
+  const {addProject, projects} = useContext(GlobalContext)
+  const [projectsArray, setProjectsArray] = useState([])
+
+
+
+  useEffect(() => {
+
+    const projectsArrayAux =  []
+   
+    for (const key in projects) {
+       
+        projectsArrayAux.push(projects[key])
+        
+    }
+
+
+    setProjectsArray(projectsArrayAux)
+
+  },[ projects ])
 
   const handleAddProject = () => {
     Keyboard.dismiss();
-    setProjectItems([...projectItems, { id: projectItems.length + 1 , title: project}])
+
+    let newProject = {
+      id: uuid(),
+      title: project,
+      notes: [],
+      createdAt: new Date().toISOString()
+    }
+
+    addProject(newProject)
     setProject(null);
   }
 
@@ -26,11 +56,11 @@ import ElementTitle from './ElementTitle';
       <View style={styles.tasksWrapper}>
         <Text style={styles.sectionTitle}>Projects</Text>
         <View style={styles.items}>
-          {projectItems.map(item => 
+          {projectsArray.map(item => 
 
               
                 (
-                <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Project', {title: item.title})}>
+                <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Project', {id: item.id})}>
                     <ElementTitle  text={item.title} />
                 </TouchableOpacity>
                 )

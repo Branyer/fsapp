@@ -1,17 +1,40 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView, Keyboard } from 'react-native';
 import ElementTitle from './ElementTitle';
 
+
+import {GlobalContext} from "../contexts/GlobalContext"
+import { uuid } from 'uuidv4';
+
 const Project = ({route, navigation}) => {
 
-  const { title} = route.params;
-  const [note, setNote] = useState();
 
-  const [noteItems, setNoteItems] = useState([{id: "0", title: "Note 1"}]);
+  const { id } = route.params;
+  const [note, setNote] = useState();
+  const {addNote, projects} = useContext(GlobalContext)
 
   const handleAddNote = () => {
     Keyboard.dismiss();
-    setNoteItems([...noteItems, { id: noteItems.length + 1 , title: note}])
+
+    let newNote = {
+      id: uuid(),
+      projectId: id,
+      isDone: false,
+      note: note,
+      task: "",
+      description: "",
+      steps: "",
+      due: "",
+      watcher: "",
+      tag: [],
+      sprint: "",
+      status: "TODO",
+      owner: null,
+      assignee: null,
+      createdAt: new Date().toISOString()
+    }
+
+    addNote(id, newNote)
     setNote(null);
   }
 
@@ -29,18 +52,17 @@ const Project = ({route, navigation}) => {
         <View style={styles.item}>
         
             
-            <Text style={styles.itemText}>{title}</Text>
+            <Text style={styles.itemText}>{projects[id].title}</Text>
 
         
         </View>
         <View style={styles.tasksWrapper}>
 
-        {noteItems.map(item => 
+        {projects[id].notes.map(item => 
 
-                            
                 (
-                 <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Note', {title: item.title})}>
-                    <ElementTitle  text={item.title} />
+                 <TouchableOpacity key={item.id} onPress={() => navigation.navigate('Note', {projectId: id, noteId: item.id})}>
+                    <ElementTitle  text={item.note} />
                  </TouchableOpacity>
                 )
 
@@ -132,6 +154,7 @@ const styles = StyleSheet.create({
     borderColor: '#C0C0C0',
     borderWidth: 1,
   },
+  addText: {},
 });
 
 export default Project;

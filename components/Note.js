@@ -1,11 +1,29 @@
-import React, {useState} from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native';
+import React, {useEffect, useState, useContext} from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, ScrollView, Picker } from 'react-native';
 import ElementTitle from './ElementTitle';
+
+import {GlobalContext} from "../contexts/GlobalContext"
 
 const Project = ({route, navigation}) => {
 
-  const { title} = route.params;
-  const [note, setNote] = useState({task: "", description: "", steps: "", due: "", watcher: "", sprint: "", status: "Todo"});
+  const { projectId, noteId } = route.params;
+  const [note, setNote] = useState();
+  const {addNote, projects} = useContext(GlobalContext)
+
+
+  useEffect(() => {
+
+    const auxNote = projects[projectId].notes.filter((note) => note.id == noteId)[0]
+    setNote(auxNote)
+
+
+  }, [])
+
+  useEffect(() => {
+    if(note) 
+    addNote(projectId, note)
+
+  }, [note])
 
 
 
@@ -14,11 +32,11 @@ const Project = ({route, navigation}) => {
         <View style={styles.item}>
         
             
-            <Text style={styles.itemText}>{title}</Text>
+            <Text style={styles.itemText}>{note && note.note}</Text>
 
     
         </View>
-        <ScrollView
+       { note && <ScrollView
                 contentContainerStyle={{
                 flexGrow: 1
                 }}
@@ -30,8 +48,18 @@ const Project = ({route, navigation}) => {
             <TextInput style={styles.input} placeholder={'due'} value={note.due} onChangeText={text => setNote((note) => ({...note, due: text}) )} />
             <TextInput style={styles.input} placeholder={'watcher'} value={note.watcher} onChangeText={text => setNote((note) => ({...note, watcher: text}) )} />
             <TextInput style={styles.input} placeholder={'sprint'} value={note.sprint} onChangeText={text => setNote((note) => ({...note, sprint: text}) )} />
-            <TextInput style={styles.input} placeholder={'status'} value={note.status} onChangeText={text => setNote((note) => ({...note, status: text}) )} />
-        </ScrollView>
+            <Picker
+              selectedValue={note.status}
+              style={styles.input}
+              onValueChange={(itemValue, itemIndex) => setNote((note) => ({...note, status: itemValue}) )}
+            >
+              <Picker.Item label="TODO" value="TODO" />
+              <Picker.Item label="STARTED" value="STARTED" />
+              <Picker.Item label="FINISHED" value="FINISHED" />
+          </Picker> 
+
+            
+        </ScrollView>}
         
       </View>
   )
@@ -94,6 +122,7 @@ const styles = StyleSheet.create({
     borderColor: '#C0C0C0',
     borderWidth: 1,
     width: "100%",
+    margin: 10
   },
   addWrapper: {
     width: 60,
