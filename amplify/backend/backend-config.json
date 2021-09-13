@@ -40,5 +40,17 @@
         ]
       }
     }
+  },
+  "function": {
+    "fsapp2a022adf": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "graphqlresolver": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
   }
 }

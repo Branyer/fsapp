@@ -14,6 +14,16 @@
     "categories": {
       "auth": {
         "fsapp5ea5b5d9": {}
+      },
+      "function": {
+        "fsapp2a022adf": {
+          "deploymentBucketName": "amplify-fsapp-dev-220230-deployment",
+          "s3Key": "amplify-builds/fsapp2a022adf-51316c4c755661786b71-build.zip"
+        },
+        "graphqlresolver": {
+          "deploymentBucketName": "amplify-fsapp-dev-220230-deployment",
+          "s3Key": "amplify-builds/graphqlresolver-37394533337162363133-build.zip"
+        }
       }
     }
   }
